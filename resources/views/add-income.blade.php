@@ -16,9 +16,9 @@
                 <div class="mb-4">
                     <label for="category" class="block mb-2 text-sm font-medium text-gray-300">Kategoria</label>
                     <select id="category" class="block rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700">
-                        <option value="1">Opcja 1</option>
-                        <option value="2">Opcja 2</option>
-                        <option value="3">Opcja 3</option>
+                        @foreach( $categories as $category )
+                        <option >{{ $category->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 {{--                Amount--}}

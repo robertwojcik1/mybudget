@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\IncomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,13 +24,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/add-income', function () {
-    return view('add-income');
-})->middleware(['auth', 'verified'])->name('addIncome');
+Route::get('/add-income', [IncomeController::class, 'create'])
+    ->middleware(['auth', 'verified'])->name('addIncome');
 
-Route::get('/add-expense', function () {
-    return view('add-expense');
-})->middleware(['auth', 'verified'])->name('addExpense');
+Route::get('/add-expense', [ExpenseController::class, 'create'])
+    ->middleware(['auth', 'verified'])->name('addExpense');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
