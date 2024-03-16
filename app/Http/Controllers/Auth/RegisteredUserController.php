@@ -3,6 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExpensesCategoryAssignedToUsers;
+use App\Models\ExpensesCategoryDefault;
+use App\Models\IncomesCategoryAssignedToUsers;
+use App\Models\IncomesCategoryDefault;
+use App\Models\PaymentMethodsAssignedToUsers;
+use App\Models\PaymentMethodsDefault;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -46,6 +52,45 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        $this->assignDefaultPaymentsMethods( $user->id );
+
+        $this->assignDefaultExpenseCategories( $user->id );
+
+        $this->assignDefaultIncomeCategories( $user->id );
+
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    private function assignDefaultPaymentsMethods( $userId ) {
+        $paymentMethodsAssignedToUser = PaymentMethodsDefault::all();
+
+        foreach ($paymentMethodsAssignedToUser as $method) {
+            $paymentMethod = new PaymentMethodsAssignedToUsers();
+            $paymentMethod->user_id = $userId;
+            $paymentMethod->name = $method->name;
+            $paymentMethod->save();
+        }
+    }
+
+    private function assignDefaultExpenseCategories( $userId ) {
+        $expensesCategoryAssignedToUser = ExpensesCategoryDefault::all();
+
+        foreach ($expensesCategoryAssignedToUser as $category) {
+            $expenseCategory = new ExpensesCategoryAssignedToUsers();
+            $expenseCategory->user_id = $userId;
+            $expenseCategory->name = $category->name;
+            $expenseCategory->save();
+        }
+    }
+
+    private function assignDefaultIncomeCategories( $userId ) {
+        $incomesCategoryAssignedToUser = IncomesCategoryDefault::all();
+
+        foreach ($incomesCategoryAssignedToUser as $category) {
+            $incomeCategory = new IncomesCategoryAssignedToUsers();
+            $incomeCategory->user_id = $userId;
+            $incomeCategory->name = $category->name;
+            $incomeCategory->save();
+        }
     }
 }
