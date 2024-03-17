@@ -16,4 +16,9 @@ class Income extends Model
         'date_of_income',
         'income_comment'
     ];
+
+//    public function incomesCategory()
+//    {
+//        return $this->belongsTo(IncomesCategoryAssignedToUsers::class, 'user_id', 'user_id');
+//    }
 }

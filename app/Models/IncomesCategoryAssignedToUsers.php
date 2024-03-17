@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class IncomesCategoryAssignedToUsers extends Model
 {
     use HasFactory;
+
+//    public function incomes()
+//    {
+//        return $this->hasMany(Income::class, 'user_id', 'user_id');
+//    }
 }

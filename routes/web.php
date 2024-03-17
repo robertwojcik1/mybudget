@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\IncomeController;
@@ -35,6 +36,9 @@ Route::get('/add-expense', [ExpenseController::class, 'create'])
 
 Route::post('/add-expense', [ExpenseController::class, 'store'])
     ->middleware(['auth', 'verified'])->name('storeExpense');
+
+Route::get('/balance', [BalanceController::class, 'index'])
+    ->middleware(['auth', 'verified'])->name('balance');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
