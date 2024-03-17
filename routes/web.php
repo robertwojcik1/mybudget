@@ -27,8 +27,14 @@ Route::get('/dashboard', function () {
 Route::get('/add-income', [IncomeController::class, 'create'])
     ->middleware(['auth', 'verified'])->name('addIncome');
 
+Route::post('/add-income', [IncomeController::class, 'store'])
+    ->middleware(['auth', 'verified'])->name('storeIncome');
+
 Route::get('/add-expense', [ExpenseController::class, 'create'])
     ->middleware(['auth', 'verified'])->name('addExpense');
+
+Route::post('/add-expense', [ExpenseController::class, 'store'])
+    ->middleware(['auth', 'verified'])->name('storeExpense');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -5,28 +5,28 @@
         </h2>
     </x-slot>
 
-    <x-slot name="slot">
+    <x-slot name="main">
         <div class="py-12">
             <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
                 <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('storeExpense') }}">
                         @csrf
 
                         <!-- Category -->
                         <div class="mb-4">
                             <label for="category" class="block mb-2 text-sm font-medium text-gray-300">Kategoria</label>
-                            <select id="category" class="block rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700">
+                            <select id="category" name="category" class="block rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700">
                                 @foreach( $categories as $category )
-                                    <option >{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-{{--                        Payment method--}}
+                        {{--               Payment method--}}
                         <div class="mb-4">
                             <label for="paymentMethod" class="block mb-2 text-sm font-medium text-gray-300">Metoda płatności</label>
-                            <select id="paymentMethod" class="block rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700">
-                                @foreach( $paymentMethods as $paymentMethod)
-                                <option>{{ $paymentMethod->name }}</option>
+                            <select id="paymentMethod" name="paymentMethod" class="block rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700">
+                                @foreach( $paymentMethods as $paymentMethod )
+                                <option value="{{ $paymentMethod->id }}">{{ $paymentMethod->name }}</option>
                                 @endforeach
                             </select>
                         </div>

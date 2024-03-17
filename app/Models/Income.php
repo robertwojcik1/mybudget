@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Income extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'income_category_assigned_to_user_id',
+        'amount',
+        'date_of_income',
+        'income_comment'
+    ];
 }
