@@ -15,7 +15,7 @@
                 <!-- Category -->
                 <div class="mb-4">
                     <label for="category" class="block mb-2 text-sm font-medium text-gray-300">Kategoria</label>
-                    <select id="category" name="category" class="block rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700">
+                    <select id="category" name="category" required class="block rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700">
                         @foreach( $categories as $category )
                         <option value="{{ strval($category->id) }}">{{ $category->name }}</option>
                         @endforeach
@@ -24,17 +24,23 @@
 {{--                Amount--}}
                 <div class="mb-4">
                     <label for="amount" class="block mb-2 text-sm font-medium text-gray-300">Kwota</label>
-                    <input type="number" class="block rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700" id="amount" name="amount" step="1" min="0" placeholder="0.00" />
+                    <input type="number" required pattern="^[0-9]+(\.[0-9]{1,2})?$" class="block rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700" id="amount" name="amount" step="1" min="0" max="1000000" placeholder="0.00" />
+                </div>
+                <div class="mb-4">
+                    <span id="amountError"class="error-message text-red-600" hidden></span>
                 </div>
 {{--                Date--}}
                 <div class="mb-4">
                     <label for="date" class="block mb-2 text-sm font-medium text-gray-300">Data</label>
-                    <input type="date" id="date" name="date" class="rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700"/>
+                    <input type="date" id="date" required name="date" class="rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700"/>
+                </div>
+                <div class="mb-4">
+                    <span id="dateError"class="error-message text-red-600" hidden></span>
                 </div>
 {{--                Comment--}}
                 <div class="mb-4">
                     <label for="comment" class="block mb-2 text-sm font-medium text-gray-300">Komentarz</label>
-                    <textarea id="comment" name="comment" rows="3" maxlength="100" class="rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700 resize-none"></textarea>
+                    <input type="text" id="comment" name="comment" maxlength="100" class="rounded mt-1 w-full dark:bg-gray-900 text-gray-300 focus:border-indigo-700"/>
                 </div>
 {{--                Button               --}}
                 <div>
@@ -47,13 +53,51 @@
         </div>
     </div>
     </x-slot>
-    <script>
-        const textarea = document.getElementById('comment');
+    <x-slot name="script">
+        <script>
+            const amountErrorElement = document.querySelector("#amountError");
+            const dateErrorElement = document.querySelector("#dateError");
+            const amountInput = document.querySelector("#amount");
+            const dateField = document.querySelector("#date");
 
-        textarea.addEventListener('mousedown', (event) => {
-            if (event.target.classList.contains('resize-handle')) {
-                event.preventDefault();
+            dateField.addEventListener("change", () => {
+                validateDate(dateField);
+            });
+
+            amountInput.addEventListener('input', () => {
+                const isValid = validateNumberInput(amountInput.value);
+
+                if(isValid) {
+                    amountErrorElement.setAttribute("hidden", "hidden");
+                    amountErrorElement.textContent = "";
+                } else {
+                    amountErrorElement.textContent = "Wprowadzona wartość jest nieprawidłowa";
+                    amountErrorElement.removeAttribute("hidden");
+                }
+            });
+
+            function validateNumberInput(input) {
+                const regex = /^(?:\d{1,7}(?:\.|\,)?\d{0,2})?$/;
+
+                if (isNaN(input) || input > 1000000 || !regex.test(input)) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
-        });
-    </script>
+
+            function validateDate(dateInput) {
+                const today = new Date();
+                const inputDate = new Date(dateInput.value);
+
+                if (inputDate > today) {
+                    dateErrorElement.textContent = "Wprowadzona data nie może być późniejsza niż aktualna";
+                    dateErrorElement.removeAttribute("hidden");
+                } else {
+                    dateErrorElement.setAttribute("hidden", "hidden");
+                    dateErrorElement.textContent = "";
+                }
+            }
+        </script>
+    </x-slot>
 </x-app-layout>
